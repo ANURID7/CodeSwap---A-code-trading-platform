@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeSwap - Login & Signup</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-box">
+            <div class="toggle-box">
+                <button id="loginBtn" class="toggle-btn active" onclick="showLogin()">Login</button>
+                <button id="signupBtn" class="toggle-btn" onclick="showSignup()">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="form active" onsubmit="return validateLogin()">
+                <h2>Login</h2>
+                <select id="loginUserType">
+                    <option value="developer">Developer</option>
+                    <option value="client">Client</option>
+                </select>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required minlength="6">
+                <button type="button" onclick="window.location.href='listings.html'">Login</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="form" onsubmit="return validateSignup()">
+                <h2>Sign Up</h2>
+                <select id="signupUserType">
+                    <option value="developer">Developer</option>
+                    <option value="client">Client</option>
+                </select>
+                <input type="text" id="signupName" placeholder="Full Name" required>
+                <input type="email" id="signupEmail" placeholder="Email" required>
+                <input type="password" id="signupPassword" placeholder="Password" required minlength="6">
+                <button type="button" onclick="window.location.href='listings.html'">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<style>
+    /* Background - Dark Tech Theme */
+body {
+    background: #0a0f1a; /* Dark blue-black */
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Form Container */
+.container {
+    width: 350px;
+    background: #121826;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 255, 128, 0.5); /* Green neon glow */
+    text-align: center;
+}
+
+/* Toggle Buttons */
+.toggle-box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background: #30363d;
+    color: #00ff80;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.toggle-btn.active {
+    background: #00ff80;
+    color: black;
+    font-weight: bold;
+}
+
+/* Forms */
+.form {
+    display: none;
+    flex-direction: column;
+}
+
+.form.active {
+    display: flex;
+}
+
+/* Input Fields */
+input, select {
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    border: 1px solid #30363d;
+    border-radius: 5px;
+    background: #0a0f1a;
+    color: white;
+    font-size: 14px;
+}
+
+/* Submit Button */
+button {
+    background: #00ff80;
+    color: black;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00cc66; /* Darker neon green */
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+    }
+}
+</style>
+
+<script>
+    // Function to switch to Login Form
+function showLogin() {
+    document.getElementById("loginForm").classList.add("active");
+    document.getElementById("signupForm").classList.remove("active");
+    document.getElementById("loginBtn").classList.add("active");
+    document.getElementById("signupBtn").classList.remove("active");
+}
+
+// Function to switch to Signup Form
+function showSignup() {
+    document.getElementById("signupForm").classList.add("active");
+    document.getElementById("loginForm").classList.remove("active");
+    document.getElementById("signupBtn").classList.add("active");
+    document.getElementById("loginBtn").classList.remove("active");
+}
+
+// Form Validation for Login
+function validateLogin() {
+    let email = document.getElementById("loginEmail").value;
+    let password = document.getElementById("loginPassword").value;
+
+    if (!email.includes("@") || password.length < 6) {
+        alert("Invalid email or password too short!");
+        return false;
+    }
+    return true;
+}
+
+// Form Validation for Signup
+function validateSignup() {
+    let name = document.getElementById("signupName").value;
+    let email = document.getElementById("signupEmail").value;
+    let password = document.getElementById("signupPassword").value;
+
+    if (name.length < 3) {
+        alert("Name must be at least 3 characters long!");
+        return false;
+    }
+    if (!email.includes("@")) {
+        alert("Invalid email format!");
+        return false;
+    }
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters long!");
+        return false;
+    }
+    return true;
+}
+</script>

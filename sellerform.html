@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Your Code for Sale</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Sell Your Code</h2>
+        <form id="sellerform">
+            <div class="input-group">
+                <label for="developerName">Developer/Firm Name:</label>
+                <input type="text" id="developerName" placeholder="Enter your name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="category">Category:</label>
+                <select id="category" required>
+                    <option value="">Select a category</option>
+                    <option value="web">Web Development</option>
+                    <option value="mobile">Mobile App Development</option>
+                    <option value="ai">AI/ML Algorithms</option>
+                    <option value="game">Game Development</option>
+                    <option value="automation">Automation Scripts</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="price">Price (INR/USD):</label>
+                <input type="number" id="price" placeholder="Enter price" min="1" required>
+            </div>
+
+            <div class="input-group">
+                <label for="description">Code Description:</label>
+                <textarea id="description" placeholder="Briefly describe your code" rows="4" required></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="github">GitHub Repository (optional):</label>
+                <input type="url" id="github" placeholder="Enter GitHub repo link">
+            </div>
+
+            <div class="input-group">
+                <label for="livePreview">Preview or Working Video Link (optional):</label>
+                <input type="url" id="livePreview" placeholder="Enter live demo link">
+            </div>
+
+            <button type="submit">Post Code for Sale</button>
+        </form>
+    </div>
+
+    <script>
+        function validateSellForm(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            let name = document.getElementById("developerName").value.trim();
+            let category = document.getElementById("category").value;
+            let price = document.getElementById("price").value;
+            let description = document.getElementById("description").value.trim();
+            let github = document.getElementById("github").value.trim();
+            let livePreview = document.getElementById("livePreview").value.trim();
+
+            // Validations
+            if (name.length < 3) {
+                alert("Developer/Firm name must be at least 3 characters long!");
+                return false;
+            }
+            if (category === "") {
+                alert("Please select a category!");
+                return false;
+            }
+            if (price <= 0 || isNaN(price)) {
+                alert("Price must be a positive number!");
+                return false;
+            }
+            if (description.length < 20) {
+                alert("Description should be at least 20 characters long!");
+                return false;
+            }
+            
+            // Save to Local Storage
+            let listings = JSON.parse(localStorage.getItem("listings")) || [];
+            let newListing = {
+                id: Date.now(),
+                name,
+                category,
+                price,
+                description,
+                github,
+                livePreview
+            };
+
+            listings.push(newListing);
+            localStorage.setItem("listings", JSON.stringify(listings));
+
+            alert("Code posted for sale successfully!");
+
+            console.log("Redirecting to listings.html...");
+            setTimeout(() => {
+                window.location.href = "listings.html";
+            }, 500); // Short delay to show the alert before redirecting
+
+            return false; 
+        }
+
+        function isValidURL(str) {
+            let pattern = new RegExp(
+                '^(https?:\\/\\/)?' + 
+                '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|' +
+                '((\\d{1,3}\\.){3}\\d{1,3}))' +
+                '(\\:\\d+)?(\\/[-a-zA-Z\\d%@_.~+&:]*)*' +
+                '(\\?[;&a-zA-Z\\d%@_.,~+&:=-]*)?' +
+                '(\\#[-a-zA-Z\\d_]*)?$', 'i' 
+            );
+            return pattern.test(str);
+        }
+
+        // Attach event listener when the page loads
+        window.onload = function () {
+            document.getElementById("sellerform").addEventListener("submit", validateSellForm);
+        };
+    </script>
+</body>
+</html>
+
+
+
+<style>
+    /* Background - Dark tech theme */
+body {
+    background: #0a0f1a; /* Dark tech background */
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Form Container */
+.container {
+    width: 400px;
+    background: #121826; /* Slightly lighter than body */
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 255, 128, 0.4); /* Green glow */
+    text-align: center;
+}
+
+/* Form Elements */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #58a6ff; /* Blue highlight */
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #30363d;
+    border-radius: 5px;
+    background: #0a0f1a;
+    color: white;
+    font-size: 14px;
+}
+
+textarea {
+    resize: none;
+}
+
+/* Submit Button */
+button {
+    background: #00ff80; /* Neon green */
+    color: black;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #00cc66; /* Darker green */
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+    }
+}
+</style>

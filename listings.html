@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeSwap - Code Listings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="title-filter">
+            <h1>Available Code Listings</h1>
+            <label for="categoryFilter">Filter by Category:</label>
+            <select id="categoryFilter" onchange="filterListings()">
+                <option value="all">All</option>
+                <option value="web">Web Development</option>
+                <option value="mobile">Mobile App Development</option>
+                <option value="ai">AI/ML Algorithms</option>
+                <option value="game">Game Development</option>
+                <option value="automation">Automation Scripts</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="buttons">
+            <button onclick="window.location.href='buyerform.html'">Request Code</button>
+            <button onclick="window.location.href='sellerform.html'">Sell Code</button>
+        </div>
+    </div>
+
+    <!-- Listings Container -->
+    <div id="listingsContainer" class="listings">
+        <!-- Code listings will be displayed here dynamically -->
+    </div>
+</body>
+</html>
+
+<style>
+/* General Styles */
+body {
+    background: #0a0f1a;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 15px;
+}
+
+/* Title & Filter */
+.title-filter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    background-color: #00ff80;
+    color: #121826;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #00cc66;
+}
+
+/* Listings Grid */
+.listings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Individual Listing Card */
+.listing-card {
+    background: #1a2332;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(0, 255, 128, 0.4);
+    text-align: left;
+    transition: transform 0.2s;
+}
+
+.listing-card:hover {
+    transform: scale(1.05);
+}
+
+.listing-card h3 {
+    color: #00ff80;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.listing-card p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.listing-card a {
+    color: #00ff80;
+    text-decoration: none;
+}
+
+.listing-card a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .buttons {
+        margin-top: 10px;
+    }
+
+    .listings {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+// Fetch Listings from Local Storage
+let listings = JSON.parse(localStorage.getItem("listings")) || [];
+
+// Function to Render Listings
+function displayListings() {
+    const container = document.getElementById("listingsContainer");
+    container.innerHTML = "";
+
+    listings.forEach(listing => {
+        const listingCard = document.createElement("div");
+        listingCard.classList.add("listing-card");
+        listingCard.setAttribute("data-category", listing.category);
+
+        listingCard.innerHTML = `
+            <h3>${listing.name}</h3>
+            <p><strong>Category:</strong> ${listing.category}</p>
+            <p><strong>Price:</strong> ${listing.price} INR</p>
+            <p><strong>Description:</strong> ${listing.description}</p>
+            ${listing.github ? `<p><a href="${listing.github}" target="_blank">GitHub Link</a></p>` : ""}
+            ${listing.livePreview ? `<p><a href="${listing.livePreview}" target="_blank">Live Preview</a></p>` : ""}
+            ${listing.file ? `<p><a href="${listing.file}" download>Download File</a></p>` : ""}
+        `;
+        container.appendChild(listingCard);
+    });
+}
+
+// Function to Filter Listings
+function filterListings() {
+    const category = document.getElementById("categoryFilter").value;
+    document.querySelectorAll(".listing-card").forEach(card => {
+        if (category === "all" || card.getAttribute("data-category") === category) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+// Display Listings on Page Load
+displayListings();
+</script>
